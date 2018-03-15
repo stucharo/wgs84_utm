@@ -1,4 +1,5 @@
 from math import floor, radians, degrees, sqrt, cos, sin, tan, atan, atanh, tanh, atan2, asinh, sinh, cosh
+import numpy as np
 
 
 class Ellipsoid():
@@ -18,7 +19,7 @@ class Datum():
 class LatLon():
 
     def __init__(self, lat, lon, datum=None, scale=None, convergence=None):
-        if not (type(lat) is float and type(lon) is float):
+        if not (type(lat) is np.float32 and type(lon) is np.float32):
             raise ValueError('Invalid point')
         self.lat = lat
         self.lon = lon
@@ -29,15 +30,7 @@ class LatLon():
             self.datum = Datum()
 
     def __str__(self):
-        if self.lat >= 0:
-            lat_dir = 'N'
-        else:
-            lat_dir = 'S'
-        if self.lon >= 0:
-            lon_dir = 'E'
-        else:
-            lon_dir = 'W'
-        return f'{self.lat}°{lat_dir}, {self.lon}°{lon_dir}  '
+        return f'{self.lat}°E, {self.lon}°N'
 
     def to_utm(self):
         if not -80 <= self.lat <= 84:
@@ -163,7 +156,7 @@ class LatLon():
         convergence = round(degrees(γ), 9)
         scale = round(k, 12)
 
-        if self.lat >= 0:
+        if self.lon >= 0:
             h = 'N'
         else:
             h = 'S'
